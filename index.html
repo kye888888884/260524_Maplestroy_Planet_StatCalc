@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메이플 플래닛 장비 비교 계산기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="calculator-container">
+    <h1>기본 스탯 입력</h1>
+
+    <div class="top-section">
+        <div class="stat-group">
+            <div class="row">
+                <label>직업</label>
+                <select id="jobSelect">
+                    <option value="1.2">전사 / 다크나이트</option>
+                    <option value="0.85">궁수 / 윈드브레이커</option>
+                    <option value="mage" selected>마법사 / 플레임위자드</option>
+                    <option value="0.9">도적 / 나이트워커</option>
+                    <option value="1.7">인파이터 / 스트라이커</option>
+                    <option value="0.9">건슬링거</option>
+                </select>
+            </div>
+            <div class="row" id="skillPctRow">
+                <label>스킬 데미지(%)</label>
+                <input type="number" id="skillPct" value="100"> %
+            </div>
+            <div class="row" id="mageSkillRow" style="display: none;">
+                <label>스킬 기본 공격력</label>
+                <input type="number" id="mageSkillBase" value="130">
+            </div>
+            <br>
+            <div class="row green-label">
+                <label>주스탯 <span class="help-icon" tabindex="0" data-tooltip="주스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
+                <input type="number" id="basePri" value="486">
+                <span class="stat-bracket">+</span>
+                <input type="number" id="addPri" value="279">
+            </div>
+            <div class="row green-label">
+                <label>부스탯 <span class="help-icon" tabindex="0" data-tooltip="부스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
+                <input type="number" id="baseSec" value="26">
+                <span class="stat-bracket">+</span>
+                <input type="number" id="addSec" value="54">
+            </div>
+        </div>
+
+        <div class="stat-group">
+            <div class="row blue-label">
+                <label>공격력(최댓값) <span class="help-icon" tabindex="0" data-tooltip="공격력이 100~500으로 표기된 경우 500을 적어주세요.">?</span></label>
+                <input type="number" id="currentSkong" value="2576">
+            </div>
+            <div class="row blue-label">
+                <label>마력(버프 없을 때) <span class="help-icon" tabindex="0" data-tooltip="버프가 적용되지 않은 마력을 적어주세요. 마력이 120(100+20)으로 표기된 경우 100을 적어주세요.">?</span></label>
+                <input type="number" id="currentMagic" value="900">
+            </div>
+            <div class="row blue-label">
+                <label>순수 공/마 <span class="help-icon" tabindex="0" data-tooltip="장비의 공격력에 정령의 축복과 여제의 축복으로 올라간 공격력을 적어주세요. 마법사는 자동 계산됩니다.">?</span></label>
+                <input type="number" id="currentWeaponAtk" value="100">
+            </div>
+            <div class="row blue-label">
+                <label>무기 공격력(%) <span class="help-icon" tabindex="0" data-tooltip="현재 무기의 잠재능력에 붙은 공격력% 값을 적어주세요.">?</span></label>
+                <input type="number" id="weaponAtkPct" value="0"> %
+            </div>
+            <div class="row blue-label">
+                <label>무기 마력(%) <span class="help-icon" tabindex="0" data-tooltip="현재 무기의 잠재능력에 붙은 마력% 값을 적어주세요.">?</span></label>
+                <input type="number" id="weaponMatkPct" value="0"> %
+            </div>
+            <div class="row blue-label">
+                <label>총데미지(%) <span class="help-icon" tabindex="0" data-tooltip="현재 무기의 잠재능력에 붙은 총데미지% 값을 적어주세요.">?</span></label>
+                <input type="number" id="totalDamagePct" value="0"> %
+            </div>
+            <div class="row blue-label">
+                <label>보스데미지(%) <span class="help-icon" tabindex="0" data-tooltip="현재 무기의 잠재능력에 붙은 보스데미지% 값을 적어주세요.">?</span></label>
+                <input type="number" id="bossDamagePct" value="0"> %
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-section">
+        <div class="equip-card">
+            <h2>현재 장비</h2>
+            <div class="equip-row"><span class="equip-name">주스탯</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cPri" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">부스탯</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cSec" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">공격력</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cAtk" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">마력</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cMatk" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">주스탯(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cPriPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">부스탯(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cSecPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">공격력(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cAtkPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">마력(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cMatkPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">총데미지(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cTotalDmgPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">보스데미지(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="cBossDmgPct" value="0"><span class="value-suffix">%</span></div></div>
+        </div>
+
+        <div class="equip-card">
+            <h2>새로운 장비</h2>
+            <div class="equip-row"><span class="equip-name">주스탯</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nPri" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">부스탯</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nSec" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">공격력</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nAtk" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">마력</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nMatk" value="0"></div></div>
+            <div class="equip-row"><span class="equip-name">주스탯(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nPriPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">부스탯(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nSecPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">공격력(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nAtkPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">마력(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nMatkPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">총데미지(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nTotalDmgPct" value="0"><span class="value-suffix">%</span></div></div>
+            <div class="equip-row"><span class="equip-name">보스데미지(%)</span><div class="input-with-suffix"><span class="value-suffix">+</span><input type="number" id="nBossDmgPct" value="0"><span class="value-suffix">%</span></div></div>
+        </div>
+    </div>
+
+    <div class="result-section">
+        <div class="result-row">
+            <div class="result-label">기존 데미지</div>
+            <div class="result-value" id="oldDmg">0</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">새로운 데미지</div>
+            <div class="result-value" id="newDmg">0</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">데미지 증가량</div>
+            <div class="result-value highlight-red" id="diffDmg">+ 0 (+0.00%)</div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
