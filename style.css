@@ -14,6 +14,12 @@
     box-sizing: border-box;
 }
 
+.bagel-fat-one-regular {
+    font-family: "Bagel Fat One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
 body {
     margin: 0;
     padding: 32px 16px;
@@ -39,6 +45,27 @@ body {
         inset 0 1px 0 rgba(255, 255, 255, 0.75);
     padding: 26px;
     backdrop-filter: blur(8px);
+}
+
+.page-title {
+    margin: 2px 0 12px;
+    text-align: center;
+    font-size: 42px;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5), 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.title-maple {
+    color: #e07b39;
+}
+
+.title-planet {
+    color: #2a86ff;
+}
+
+.title-rest {
+    color: #7a4f2d;
 }
 
 h1 {
@@ -323,6 +350,10 @@ select:focus {
         font-size: 22px;
     }
 
+    .page-title {
+        font-size: 34px;
+    }
+
     .row label {
         width: 154px;
         font-size: 13px;
@@ -348,6 +379,10 @@ select:focus {
 
     .calculator-container {
         border-radius: 14px;
+    }
+
+    .page-title {
+        font-size: 28px;
     }
 
     .row {

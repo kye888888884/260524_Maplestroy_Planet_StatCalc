@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 플래닛 장비 비교 계산기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="calculator-container">
-    <h1>기본 스탯 입력</h1>
+    <div class="page-title bagel-fat-one-regular">
+        <span class="title-maple">메이플</span>
+        <span class="title-planet">플래닛</span>
+        <span class="title-rest">장비 비교 계산기</span>
+    </div>
 
     <div class="top-section">
         <div class="stat-group">
@@ -30,35 +37,35 @@
             </div>
             <div class="row" id="mageSkillRow" style="display: none;">
                 <label>스킬 기본 공격력</label>
-                <input type="number" id="mageSkillBase" value="130">
+                <input type="number" id="mageSkillBase" value="100">
             </div>
             <br>
             <div class="row green-label">
                 <label>주스탯 <span class="help-icon" tabindex="0" data-tooltip="주스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
-                <input type="number" id="basePri" value="486">
+                <input type="number" id="basePri" value="100">
                 <span class="stat-bracket">+</span>
-                <input type="number" id="addPri" value="279">
+                <input type="number" id="addPri" value="0">
             </div>
             <div class="row green-label">
                 <label>부스탯 <span class="help-icon" tabindex="0" data-tooltip="부스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
-                <input type="number" id="baseSec" value="26">
+                <input type="number" id="baseSec" value="0">
                 <span class="stat-bracket">+</span>
-                <input type="number" id="addSec" value="54">
+                <input type="number" id="addSec" value="0">
             </div>
         </div>
 
         <div class="stat-group">
             <div class="row blue-label">
                 <label>공격력(최댓값) <span class="help-icon" tabindex="0" data-tooltip="공격력이 100~500으로 표기된 경우 500을 적어주세요.">?</span></label>
-                <input type="number" id="currentSkong" value="2576">
+                <input type="number" id="currentSkong" value="100">
             </div>
             <div class="row blue-label">
                 <label>마력(버프 없을 때) <span class="help-icon" tabindex="0" data-tooltip="버프가 적용되지 않은 마력을 적어주세요. 마력이 120(100+20)으로 표기된 경우 100을 적어주세요.">?</span></label>
-                <input type="number" id="currentMagic" value="900">
+                <input type="number" id="currentMagic" value="100">
             </div>
             <div class="row blue-label">
                 <label>순수 공/마 <span class="help-icon" tabindex="0" data-tooltip="장비의 공격력에 정령의 축복과 여제의 축복으로 올라간 공격력을 적어주세요. 마법사는 자동 계산됩니다.">?</span></label>
-                <input type="number" id="currentWeaponAtk" value="100">
+                <input type="number" id="currentWeaponAtk" value="0">
             </div>
             <div class="row blue-label">
                 <label>무기 공격력(%) <span class="help-icon" tabindex="0" data-tooltip="현재 무기의 잠재능력에 붙은 공격력% 값을 적어주세요.">?</span></label>
