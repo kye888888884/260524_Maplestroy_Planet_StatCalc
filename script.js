@@ -65,6 +65,8 @@ function calculate() {
     const skillMultiplier = getVal('skillPct') / 100; // 비마법사 스킬 배율(소수)
     const mageSkillBase = getVal('mageSkillBase'); // 마법사 스킬 기본 공격력(정수)
     const weaponAtkPct = getVal('weaponAtkPct') / 100; // 무기 공격력 % (소수)
+    const basePriPct = getVal('basePriPct') / 100; // 기본 스탯 창 주스탯 % (소수)
+    const baseSecPct = getVal('baseSecPct') / 100; // 기본 스탯 창 부스탯 % (소수)
     const totalDamagePct = getVal('totalDamagePct') / 100; // 총데미지 % (소수)
     const bossDamagePct = getVal('bossDamagePct') / 100; // 보스데미지 % (소수)
 
@@ -111,20 +113,20 @@ function calculate() {
     if (isMage) {
         oldDamage = Math.floor(((Math.floor((Math.pow(magic, 2) / 1000) + magic) / 30) + (bPri / 20)) * mageSkillBase);
 
-        const corePri = safeDiv(bPri, 1 + cPriPct) - cPri; // 현재 장비를 제거한 순수 주스탯
+        const corePri = safeDiv(bPri, 1 + basePriPct + cPriPct) - cPri; // 현재 장비와 기본 주스탯%를 제거한 순수 주스탯
         const coreWAtk = wAtk; // 순수 무기 마력(현재 장비 합마력/마력% 제거 완료)
 
-        const newTotalPri = (corePri + nPri) * (1 + nPriPct); // 새 장비 적용 후 주스탯
+        const newTotalPri = (corePri + nPri) * (1 + basePriPct + nPriPct); // 새 장비 + 기본 주스탯% 적용 후 주스탯
         const newMagicBase = newTotalPri + coreWAtk + nMatk; // 합마력(마력+)를 magic 계산에 더함
         const newTotalMagic = newMagicBase * (1 + nMatkPct); // 마력%를 전체 magic에 곱함
         newDamage = Math.floor(((Math.floor((Math.pow(newTotalMagic, 2) / 1000) + newTotalMagic) / 30) + (newTotalPri / 20)) * mageSkillBase);
     } else {
         oldDamage = Math.floor(skong * skillMultiplier); // 최종데미지 = 표기공격력 * 스킬배율
 
-        const corePri = (bPri / (1 + cPriPct)) - cPri; // 현재 장비 제거 후 순수 주스탯
-        const coreSec = (bSec / (1 + cSecPct)) - cSec; // 현재 장비 제거 후 순수 부스탯
-        const newTotalPri = (corePri + nPri) * (1 + nPriPct); // 새 장비 적용 주스탯
-        const newTotalSec = (coreSec + nSec) * (1 + nSecPct); // 새 장비 적용 부스탯
+        const corePri = (bPri / (1 + basePriPct + cPriPct)) - cPri; // 현재 장비 + 기본 주스탯% 제거 후 순수 주스탯
+        const coreSec = (bSec / (1 + baseSecPct + cSecPct)) - cSec; // 현재 장비 + 기본 부스탯% 제거 후 순수 부스탯
+        const newTotalPri = (corePri + nPri) * (1 + basePriPct + nPriPct); // 새 장비 + 기본 주스탯% 적용 주스탯
+        const newTotalSec = (coreSec + nSec) * (1 + baseSecPct + nSecPct); // 새 장비 + 기본 부스탯% 적용 부스탯
 
         const statFactorCurrent = (4 * bPri) + bSec; // 현재 스탯 계수(4*주스탯 + 부스탯)
         const weaponAtkBase = wAtk * (1 + weaponAtkPct); // 무기 공% 반영된 기본 무기 공격력
