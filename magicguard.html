@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매직가드 필요 레벨 계산기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-container magicguard-page">
+        <div id="shared-template"></div>
+
+        <div class="mg-section">
+            <div class="mg-row">
+                <label for="monsterDamage">몬스터 데미지</label>
+                <input id="monsterDamage" type="number" value="0" min="0" placeholder="최대 데미지">
+            </div>
+            <div class="mg-row">
+                <label for="baseHp">HP</label>
+                <input id="baseHp" type="number" value="0" min="0" placeholder="버프 제외 기본 HP">
+            </div>
+            <div class="mg-row">
+                <span>쓸만한 하이퍼바디 보유 여부</span>
+                <label class="mg-checkbox-wrap" for="hasHyperBody">
+                    <input id="hasHyperBody" type="checkbox">
+                    보유
+                </label>
+            </div>
+        </div>
+
+        <div class="mg-section">
+            <div class="mg-row">
+                <span>필요 매직가드 레벨</span>
+                <div class="mg-result-value" id="requiredMagicGuardLevel">-</div>
+            </div>
+            <div class="mg-row">
+                <span>들어오는 데미지</span>
+                <div class="mg-result-value" id="incomingDamage">-</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.pageTemplateConfig = {
+            titleRest: "매직가드 레벨",
+            activeNav: "magicguard"
+        };
+    </script>
+    <script src="template-loader.js"></script>
+    <script src="magicguard.js"></script>
+</body>
+</html>

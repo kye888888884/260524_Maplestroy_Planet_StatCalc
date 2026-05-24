@@ -12,11 +12,7 @@
 <body>
 
 <div class="calculator-container">
-    <div class="page-title bagel-fat-one-regular">
-        <span class="title-maple">메이플</span>
-        <span class="title-planet">플래닛</span>
-        <span class="title-rest">장비 비교 계산기</span>
-    </div>
+    <div id="shared-template"></div>
 
     <div class="top-section">
         <div class="stat-group">
@@ -140,6 +136,13 @@
     </div>
 </div>
 
+<script>
+    window.pageTemplateConfig = {
+        titleRest: "계산기",
+        activeNav: "equipment"
+    };
+</script>
+<script src="template-loader.js"></script>
 <script src="script.js"></script>
 
 </body>
