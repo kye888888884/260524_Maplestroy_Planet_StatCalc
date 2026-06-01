@@ -38,22 +38,28 @@
             <br>
             <div class="row green-label">
                 <label>주스탯 <span class="help-icon" tabindex="0" data-tooltip="주스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
+                <span class="stat-sum-display" id="priStatSumDisplay">100</span>
+                <span class="stat-paren">(</span>
                 <input type="number" id="basePri" value="100">
                 <span class="stat-bracket">+</span>
                 <input type="number" id="addPri" value="0">
+                <span class="stat-paren">)</span>
             </div>
             <div class="row green-label">
-                <label>주스탯(%)</label>
+                <label>주스탯(%) <span class="help-icon" tabindex="0" data-tooltip="장비의 주스탯%(INT% 등)의 총합을 적어주세요.">?</span></label>
                 <input type="number" id="basePriPct" value="0"> %
             </div>
             <div class="row green-label">
                 <label>부스탯 <span class="help-icon" tabindex="0" data-tooltip="부스탯이 100(80+20)으로 표기된 경우 왼쪽 칸에는 80, 오른쪽 칸에는 20을 적어주세요.">?</span></label>
+                <span class="stat-sum-display" id="secStatSumDisplay">0</span>
+                <span class="stat-paren">(</span>
                 <input type="number" id="baseSec" value="0">
                 <span class="stat-bracket">+</span>
                 <input type="number" id="addSec" value="0">
+                <span class="stat-paren">)</span>
             </div>
             <div class="row green-label">
-                <label>부스탯(%)</label>
+                <label>부스탯(%) <span class="help-icon" tabindex="0" data-tooltip="장비의 부스탯%(INT% 등)의 총합을 적어주세요.">?</span></label>
                 <input type="number" id="baseSecPct" value="0"> %
             </div>
         </div>
@@ -130,8 +136,20 @@
             <div class="result-value" id="newDmg">0</div>
         </div>
         <div class="result-row">
-            <div class="result-label">데미지 증가량</div>
+            <div class="result-label highlight-red-label">데미지 증가량</div>
             <div class="result-value highlight-red" id="diffDmg">+ 0 (+0.00%)</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">새로운 주스탯</div>
+            <div class="result-value" id="newPriValue">-</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">새로운 부스탯</div>
+            <div class="result-value" id="newSecValue">-</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label highlight-red-label">새로운 마력</div>
+            <div class="result-value highlight-red" id="newMagicValue">-</div>
         </div>
     </div>
 </div>

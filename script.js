@@ -6,6 +6,29 @@ function formatNumber(num) {
     return num.toLocaleString('ko-KR');
 }
 
+function formatStatInputValue(num) {
+    if (Number.isInteger(num)) {
+        return num.toString();
+    }
+    return num.toLocaleString('ko-KR', { maximumFractionDigits: 2 });
+}
+
+function updateStatSumLabels() {
+    const basePri = getVal('basePri');
+    const addPri = getVal('addPri');
+    const baseSec = getVal('baseSec');
+    const addSec = getVal('addSec');
+
+    const priLabel = document.getElementById('priStatSumDisplay');
+    const secLabel = document.getElementById('secStatSumDisplay');
+    if (priLabel) {
+        priLabel.textContent = formatStatInputValue(basePri + addPri);
+    }
+    if (secLabel) {
+        secLabel.textContent = formatStatInputValue(baseSec + addSec);
+    }
+}
+
 function safeDiv(numerator, denominator) {
     if (denominator === 0) {
         return 0;
@@ -59,19 +82,26 @@ function toggleSkillInput() {
 }
 
 function calculate() {
+    updateStatSumLabels();
+
     const job = document.getElementById('jobSelect').value; // 직업 선택값(배율 숫자 또는 mage)
     const isMage = job === 'mage'; // 마법사 분기 판단값
 
     const skillMultiplier = getVal('skillPct') / 100; // 비마법사 스킬 배율(소수)
     const mageSkillBase = getVal('mageSkillBase'); // 마법사 스킬 기본 공격력(정수)
     const weaponAtkPct = getVal('weaponAtkPct') / 100; // 무기 공격력 % (소수)
+    const weaponMatkPct = getVal('weaponMatkPct') / 100; // 무기 마력 % (소수)
     const basePriPct = getVal('basePriPct') / 100; // 기본 스탯 창 주스탯 % (소수)
     const baseSecPct = getVal('baseSecPct') / 100; // 기본 스탯 창 부스탯 % (소수)
     const totalDamagePct = getVal('totalDamagePct') / 100; // 총데미지 % (소수)
     const bossDamagePct = getVal('bossDamagePct') / 100; // 보스데미지 % (소수)
 
-    const bPri = getVal('basePri') + getVal('addPri'); // 현재 총 주스탯
-    const bSec = getVal('baseSec') + getVal('addSec'); // 현재 총 부스탯
+    const basePriLeft = getVal('basePri'); // 주스탯 좌항(순수 스탯)
+    const basePriRight = getVal('addPri'); // 주스탯 우항(추가 스탯)
+    const baseSecLeft = getVal('baseSec'); // 부스탯 좌항(순수 스탯)
+    const baseSecRight = getVal('addSec'); // 부스탯 우항(추가 스탯)
+    const bPri = basePriLeft + basePriRight; // 현재 총 주스탯
+    const bSec = baseSecLeft + baseSecRight; // 현재 총 부스탯
     let wAtk = getVal('currentWeaponAtk'); // 순수 무기 공/마
 
     const skong = getVal('currentSkong'); // 표기 공격력
@@ -102,23 +132,38 @@ function calculate() {
     const newFinalDamageMultiplier = 1 + totalDamagePct + bossDamagePct + (nTotalDmgPct - cTotalDmgPct) + (nBossDmgPct - cBossDmgPct); // 신규 데미지: 장비 변화량만 반영
 
     if (isMage) {
-        const currentBaseMagic = safeDiv(magic, 1 + cMatkPct); // 현재 마력%를 제거한 기본 마력
-        wAtk = currentBaseMagic - bPri - cMatk; // 기본 마력에서 주스탯/합마력을 제외한 순수 무기 마력
+        wAtk = magic - bPri; // magic = bPri + wAtk (wAtk는 장비 스탯과 분리)
         document.getElementById('currentWeaponAtk').value = wAtk.toFixed(2).replace(/\.00$/, '');
     }
 
     let oldDamage = 0;
     let newDamage = 0;
+    let newPriValue = '-';
+    let newSecValue = '-';
+    let newMagicValue = '-';
+
+    const currentPriEquipStat = safeDiv(basePriRight, 1 + basePriPct) - basePriLeft; // 우항 = (좌항+장비스탯)*(1+스탯%)에서 현재 장비스탯 역산
+    const currentSecEquipStat = safeDiv(baseSecRight, 1 + baseSecPct) - baseSecLeft; // 우항 = (좌항+장비스탯)*(1+스탯%)에서 현재 장비스탯 역산
+    const newPriEquipStat = currentPriEquipStat + (nPri - cPri); // 새로운 장비스탯 = 장비스탯 + (새로운장비스탯-현재장비스탯)
+    const newSecEquipStat = currentSecEquipStat + (nSec - cSec); // 새로운 장비스탯 = 장비스탯 + (새로운장비스탯-현재장비스탯)
+    const newPriPctTotal = basePriPct + (nPriPct - cPriPct); // 새로운 스탯% = 스탯% + (새로운 장비 스탯%-현재 장비 스탯%)
+    const newSecPctTotal = baseSecPct + (nSecPct - cSecPct); // 새로운 스탯% = 스탯% + (새로운 장비 스탯%-현재 장비 스탯%)
+    const calculatedNewPriRight = (basePriLeft + newPriEquipStat) * (1 + newPriPctTotal); // 새로운 우항
+    const calculatedNewSecRight = (baseSecLeft + newSecEquipStat) * (1 + newSecPctTotal); // 새로운 우항
+    const calculatedNewPri = basePriLeft + calculatedNewPriRight; // 새로운 스탯합 = 좌항 + 새로운 우항
+    const calculatedNewSec = baseSecLeft + calculatedNewSecRight; // 새로운 스탯합 = 좌항 + 새로운 우항
+    newPriValue = formatNumber(Math.floor(calculatedNewPri));
+    newSecValue = formatNumber(Math.floor(calculatedNewSec));
 
     if (isMage) {
         oldDamage = Math.floor(((Math.floor((Math.pow(magic, 2) / 1000) + magic) / 30) + (bPri / 20)) * mageSkillBase);
 
         const corePri = safeDiv(bPri, 1 + basePriPct + cPriPct) - cPri; // 현재 장비와 기본 주스탯%를 제거한 순수 주스탯
-        const coreWAtk = wAtk; // 순수 무기 마력(현재 장비 합마력/마력% 제거 완료)
-
         const newTotalPri = (corePri + nPri) * (1 + basePriPct + nPriPct); // 새 장비 + 기본 주스탯% 적용 후 주스탯
-        const newMagicBase = newTotalPri + coreWAtk + nMatk; // 합마력(마력+)를 magic 계산에 더함
-        const newTotalMagic = newMagicBase * (1 + nMatkPct); // 마력%를 전체 magic에 곱함
+        const baseMagicWithoutWeaponPct = safeDiv(magic, 1 + weaponMatkPct); // 무기 마력% 제거한 기준 마력
+        const magicBaseWithNewPri = baseMagicWithoutWeaponPct + (newTotalPri - bPri); // 기존 주스탯 대신 새로운 주스탯 반영
+        const newTotalMagic = (magicBaseWithNewPri + (nMatk - cMatk)) * (1 + nMatkPct - cMatkPct); // 주스탯/합마력 변화량과 장비 마력% 변화량 적용
+        newMagicValue = formatNumber(Math.floor(newTotalMagic));
         newDamage = Math.floor(((Math.floor((Math.pow(newTotalMagic, 2) / 1000) + newTotalMagic) / 30) + (newTotalPri / 20)) * mageSkillBase);
     } else {
         oldDamage = Math.floor(skong * skillMultiplier); // 최종데미지 = 표기공격력 * 스킬배율
@@ -150,6 +195,9 @@ function calculate() {
     document.getElementById('oldDmg').textContent = formatNumber(oldDamage);
     document.getElementById('newDmg').textContent = formatNumber(newDamage);
     document.getElementById('diffDmg').textContent = `${sign} ${formatNumber(Math.abs(diffDamage))} (${pctSign}${diffPct.toFixed(2)}%)`;
+    document.getElementById('newPriValue').textContent = newPriValue;
+    document.getElementById('newSecValue').textContent = newSecValue;
+    document.getElementById('newMagicValue').textContent = newMagicValue;
 }
 
 allInputs.forEach((el) => {

@@ -192,6 +192,19 @@ select:focus {
     font-weight: 800;
 }
 
+.stat-sum-display {
+    color: #415e87;
+    font-size: 14px;
+    font-weight: 800;
+    min-width: 58px;
+    text-align: right;
+}
+
+.stat-paren {
+    color: #5a759a;
+    font-weight: 800;
+}
+
 .help-icon {
     position: relative;
     display: inline-flex;
@@ -360,7 +373,7 @@ select:focus {
     background: linear-gradient(145deg, #ffe1df, #ffd2d2);
 }
 
-.result-row:last-child .result-label {
+.highlight-red-label {
     background: linear-gradient(145deg, #ffd2d2, #ffc5c5);
     color: #a93535;
 }
